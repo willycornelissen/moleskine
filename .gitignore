@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.npm/
+
+# Build and test outputs
+dist/
+dist-ssr/
+coverage/
+
+# Environment and secrets
+.env
+.env.local
+*.env
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Cache and Logs
+*.log
+.cache/
+tmp/

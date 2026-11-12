@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Regra estrita de usuário único e isolamento de dados
+    // Cada usuário só pode ler, gravar, atualizar e excluir suas próprias notas
+    match /users/{userId}/notes/{noteId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Bloqueia qualquer outro acesso não especificado
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
