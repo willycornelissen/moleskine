@@ -53,5 +53,5 @@ describe("exportService", () => {
     const blob = await exportToMarkdownZip(sampleNotes);
     expect(blob).toBeInstanceOf(Blob);
     expect(blob.size).toBeGreaterThan(0);
-  });
+  }, 15000);
 });

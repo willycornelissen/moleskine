@@ -12,6 +12,7 @@ export interface NoteFilterCriteria {
   tag?: string | null;
   searchQuery?: string;
   selectedTags?: string[];
+  selectedDate?: string | null; // "YYYY-MM-DD"
   startDate?: number;
   endDate?: number;
 }

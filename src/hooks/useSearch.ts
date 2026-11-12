@@ -15,12 +15,13 @@ export function useSearch(
     const selectedTags = criteria.tag
       ? [criteria.tag]
       : criteria.selectedTags ?? [];
-    return filterNotes(notes, query, selectedTags);
+    return filterNotes(notes, query, selectedTags, criteria.selectedDate);
   }, [
     notes,
     criteria.query,
     criteria.searchQuery,
     criteria.tag,
     criteria.selectedTags,
+    criteria.selectedDate,
   ]);
 }

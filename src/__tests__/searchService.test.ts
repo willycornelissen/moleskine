@@ -80,4 +80,23 @@ describe("searchService - filterNotes", () => {
     expect(filterNotes([], "teste", [])).toEqual([]);
     expect(filterNotes(sampleNotes, "   ", [])).toHaveLength(4);
   });
+
+  it("should filter notes by selectedDate (YYYY-MM-DD)", () => {
+    const targetDate = new Date(2026, 10, 12, 10, 0, 0).getTime();
+    const otherDate = new Date(2026, 10, 15, 10, 0, 0).getTime();
+    const notesWithDates: NoteDocument[] = [
+      { ...sampleNotes[0], id: "d1", createdAt: targetDate },
+      { ...sampleNotes[1], id: "d2", createdAt: otherDate },
+    ];
+
+    const result = filterNotes(notesWithDates, "", [], "2026-11-12");
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe("d1");
+
+    const resultCombined = filterNotes(notesWithDates, "corrida", ["esporte"], "2026-11-12");
+    expect(resultCombined).toHaveLength(1);
+
+    const resultNoMatch = filterNotes(notesWithDates, "", [], "2026-11-20");
+    expect(resultNoMatch).toHaveLength(0);
+  });
 });

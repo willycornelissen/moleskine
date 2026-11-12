@@ -133,4 +133,18 @@ describe("App (SPA Integration)", () => {
 
     expect(screen.queryByRole("button", { name: /Cancelar/i })).not.toBeInTheDocument();
   });
+
+  it("should toggle calendar view when clicking calendar button in search bar", () => {
+    render(<App />);
+
+    expect(screen.queryByText(/dias com notas/i)).not.toBeInTheDocument();
+
+    const calendarToggleBtn = screen.getByRole("button", { name: "Exibir calendário" });
+    fireEvent.click(calendarToggleBtn);
+
+    expect(screen.getByText(/dias com notas/i)).toBeInTheDocument();
+
+    fireEvent.click(calendarToggleBtn);
+    expect(screen.queryByText(/dias com notas/i)).not.toBeInTheDocument();
+  });
 });

@@ -71,4 +71,27 @@ describe("useSearch", () => {
 
     expect(emptyResult.current).toHaveLength(0);
   });
+
+  it("should filter by selectedDate", () => {
+    const today = new Date();
+    const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    const notesWithToday: NoteDocument[] = [
+      {
+        id: "dated-1",
+        text: "Nota de hoje",
+        tags: ["hoje"],
+        createdAt: today.getTime(),
+        updatedAt: today.getTime(),
+        userId: "user-1",
+      },
+      ...mockNotes,
+    ];
+
+    const { result } = renderHook(() =>
+      useSearch(notesWithToday, { selectedDate: todayKey })
+    );
+
+    expect(result.current).toHaveLength(1);
+    expect(result.current[0].id).toBe("dated-1");
+  });
 });

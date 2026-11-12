@@ -9,6 +9,7 @@ import { AuthGuard } from "@/components/AuthGuard";
 import { Header } from "@/components/Header";
 import { NoteEditor } from "@/components/NoteEditor";
 import { SearchBar } from "@/components/SearchBar";
+import { CalendarView } from "@/components/CalendarView";
 import { NoteList } from "@/components/NoteList";
 import { BackupModal } from "@/components/BackupModal";
 
@@ -34,6 +35,8 @@ export const App: React.FC = () => {
 
   const { activeTag, setTag } = useHashFilter();
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<NoteDocument | null>(null);
   const [isBackupOpen, setIsBackupOpen] = useState(false);
 
@@ -41,6 +44,7 @@ export const App: React.FC = () => {
   const filteredNotes = useSearch(notes, {
     query: searchQuery,
     tag: activeTag,
+    selectedDate,
   });
 
   const handleSaveNote = useCallback(
@@ -119,7 +123,19 @@ export const App: React.FC = () => {
             onQueryChange={setSearchQuery}
             activeTag={activeTag}
             onClearTag={handleClearTag}
+            selectedDate={selectedDate}
+            onClearDate={() => setSelectedDate(null)}
+            isCalendarOpen={isCalendarOpen}
+            onToggleCalendar={() => setIsCalendarOpen((prev) => !prev)}
           />
+
+          {isCalendarOpen && (
+            <CalendarView
+              notes={notes}
+              selectedDate={selectedDate}
+              onSelectDate={setSelectedDate}
+            />
+          )}
 
           {notesLoading ? (
             <div className="py-12 text-center text-sm text-zinc-400">
@@ -128,7 +144,7 @@ export const App: React.FC = () => {
           ) : (
             <NoteList
               notes={filteredNotes}
-              hasFilter={Boolean(searchQuery.trim() || activeTag)}
+              hasFilter={Boolean(searchQuery.trim() || activeTag || selectedDate)}
               onEdit={handleEditNote}
               onDelete={handleDeleteNote}
               onTagClick={handleTagClick}

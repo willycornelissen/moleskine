@@ -51,4 +51,42 @@ describe("SearchBar", () => {
     fireEvent.click(removeTagBtn);
     expect(handleClearTag).toHaveBeenCalledTimes(1);
   });
+
+  it("should render calendar toggle button and call onToggleCalendar when clicked", () => {
+    const handleToggle = vi.fn();
+    render(
+      <SearchBar
+        query=""
+        onQueryChange={vi.fn()}
+        activeTag={null}
+        onClearTag={vi.fn()}
+        isCalendarOpen={false}
+        onToggleCalendar={handleToggle}
+      />
+    );
+
+    const toggleBtn = screen.getByRole("button", { name: "Exibir calendário" });
+    expect(toggleBtn).toBeInTheDocument();
+    fireEvent.click(toggleBtn);
+    expect(handleToggle).toHaveBeenCalledTimes(1);
+  });
+
+  it("should render active date pill and call onClearDate when removed", () => {
+    const handleClearDate = vi.fn();
+    render(
+      <SearchBar
+        query=""
+        onQueryChange={vi.fn()}
+        activeTag={null}
+        onClearTag={vi.fn()}
+        selectedDate="2026-11-12"
+        onClearDate={handleClearDate}
+      />
+    );
+
+    expect(screen.getByText("12/11/2026")).toBeInTheDocument();
+    const removeDateBtn = screen.getByRole("button", { name: "Remover filtro de data" });
+    fireEvent.click(removeDateBtn);
+    expect(handleClearDate).toHaveBeenCalledTimes(1);
+  });
 });
