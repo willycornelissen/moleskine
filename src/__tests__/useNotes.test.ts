@@ -64,7 +64,7 @@ describe("useNotes", () => {
     expect(result.current.syncStatus).toBe("synced");
   });
 
-  it("should reflect syncing status when hasPendingWrites is true", () => {
+  it("should reflect syncing status when hasPendingWrites is true and synced when false", () => {
     const { result } = renderHook(() => useNotes("user-123"));
 
     act(() => {
@@ -74,6 +74,14 @@ describe("useNotes", () => {
     });
 
     expect(result.current.syncStatus).toBe("syncing");
+
+    act(() => {
+      if (repoCallback) {
+        repoCallback([], { hasPendingWrites: false, fromCache: false });
+      }
+    });
+
+    expect(result.current.syncStatus).toBe("synced");
   });
 
   it("should react to window online/offline events", () => {
@@ -93,7 +101,7 @@ describe("useNotes", () => {
     expect(result.current.isOnline).toBe(true);
   });
 
-  it("should invoke createNote via addNote", async () => {
+  it("should invoke createNote via addNote and transition syncStatus to synced", async () => {
     const { result } = renderHook(() => useNotes("user-123"));
 
     let newId: string = "";
@@ -103,9 +111,10 @@ describe("useNotes", () => {
 
     expect(notesRepo.createNote).toHaveBeenCalledWith("user-123", "Nova anotação", ["ideias"]);
     expect(newId).toBe("mock-new-id");
+    expect(result.current.syncStatus).toBe("synced");
   });
 
-  it("should invoke updateNote via editNote", async () => {
+  it("should invoke updateNote via editNote and transition syncStatus to synced", async () => {
     const { result } = renderHook(() => useNotes("user-123"));
 
     await act(async () => {
@@ -113,9 +122,10 @@ describe("useNotes", () => {
     });
 
     expect(notesRepo.updateNote).toHaveBeenCalledWith("user-123", "n1", "Texto editado", ["tag1"]);
+    expect(result.current.syncStatus).toBe("synced");
   });
 
-  it("should invoke deleteNote via removeNote", async () => {
+  it("should invoke deleteNote via removeNote and transition syncStatus to synced", async () => {
     const { result } = renderHook(() => useNotes("user-123"));
 
     await act(async () => {
@@ -123,6 +133,7 @@ describe("useNotes", () => {
     });
 
     expect(notesRepo.deleteNote).toHaveBeenCalledWith("user-123", "n1");
+    expect(result.current.syncStatus).toBe("synced");
   });
 
   it("should handle error callback from subscription", () => {

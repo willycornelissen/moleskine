@@ -100,6 +100,9 @@ export function useNotes(userId: string | undefined): UseNotesReturn {
       }
       try {
         const id = await createNote(userId, text, tags);
+        if (isOnline && !pendingWritesRef.current) {
+          setSyncStatus("synced");
+        }
         return id;
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -121,6 +124,9 @@ export function useNotes(userId: string | undefined): UseNotesReturn {
       }
       try {
         await updateNote(userId, noteId, text, tags);
+        if (isOnline && !pendingWritesRef.current) {
+          setSyncStatus("synced");
+        }
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
@@ -141,6 +147,9 @@ export function useNotes(userId: string | undefined): UseNotesReturn {
       }
       try {
         await deleteNote(userId, noteId);
+        if (isOnline && !pendingWritesRef.current) {
+          setSyncStatus("synced");
+        }
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);

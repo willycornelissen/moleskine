@@ -51,6 +51,7 @@ export function subscribeRecentNotes(
 
   return onSnapshot(
     q,
+    { includeMetadataChanges: true },
     (snapshot) => {
       const notes: NoteDocument[] = snapshot.docs.map((d) => {
         const data = d.data();

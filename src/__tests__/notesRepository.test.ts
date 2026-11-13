@@ -26,8 +26,10 @@ vi.mock("firebase/firestore", () => {
     query: vi.fn((ref) => ref),
     orderBy: vi.fn(),
     limit: vi.fn(),
-    onSnapshot: vi.fn((_q, callback) => {
-      callback({
+    onSnapshot: vi.fn((_q, optionsOrCallback, maybeCallback) => {
+      const callback =
+        typeof optionsOrCallback === "function" ? optionsOrCallback : maybeCallback;
+      callback?.({
         docs: [
           {
             id: "doc-1",
@@ -40,6 +42,10 @@ vi.mock("firebase/firestore", () => {
             }),
           },
         ],
+        metadata: {
+          hasPendingWrites: false,
+          fromCache: false,
+        },
       });
       return vi.fn(); // Unsubscribe mock
     }),
@@ -71,12 +77,18 @@ describe("notesRepository", () => {
   });
 
   describe("subscribeRecentNotes", () => {
-    it("should create query with limit 200 and invoke callback with mapped notes", () => {
+    it("should create query with limit 200, enable includeMetadataChanges and invoke callback with mapped notes", () => {
       const onUpdate = vi.fn();
       const unsubscribe = subscribeRecentNotes("user-123", onUpdate);
 
       expect(firestore.orderBy).toHaveBeenCalledWith("updatedAt", "desc");
       expect(firestore.limit).toHaveBeenCalledWith(200);
+      expect(firestore.onSnapshot).toHaveBeenCalledWith(
+        expect.anything(),
+        { includeMetadataChanges: true },
+        expect.any(Function),
+        expect.any(Function)
+      );
       expect(onUpdate).toHaveBeenCalledWith(
         [
           {
@@ -88,7 +100,10 @@ describe("notesRepository", () => {
             userId: "user-test",
           },
         ],
-        expect.any(Object)
+        expect.objectContaining({
+          hasPendingWrites: false,
+          fromCache: false,
+        })
       );
       expect(typeof unsubscribe).toBe("function");
     });
