@@ -42,7 +42,12 @@ export const NoteCard: React.FC<NoteCardProps> = ({
           {/* Timestamp */}
           <span className="inline-flex items-center gap-1" title="Data de criação">
             <Calendar className="w-3.5 h-3.5 text-zinc-400" />
-            <time dateTime={new Date(note.createdAt).toISOString()}>{formattedDate}</time>
+            <time
+              dateTime={new Date(note.createdAt).toISOString()}
+              className="font-bold text-zinc-700 dark:text-zinc-300"
+            >
+              {formattedDate}
+            </time>
           </span>
 
           {/* Tags */}

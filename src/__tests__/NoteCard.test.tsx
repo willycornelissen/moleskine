@@ -26,6 +26,10 @@ describe("NoteCard", () => {
     expect(screen.getByText("Minha anotação especial de teste")).toBeInTheDocument();
     expect(screen.getByText("#reflexao")).toBeInTheDocument();
     expect(screen.getByText("#produtividade")).toBeInTheDocument();
+
+    const timeElement = screen.getByText((_content, element) => element?.tagName.toLowerCase() === "time");
+    expect(timeElement).toBeInTheDocument();
+    expect(timeElement).toHaveClass("font-bold");
   });
 
   it("should trigger onTagClick when a tag pill is clicked", () => {

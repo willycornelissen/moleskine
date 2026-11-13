@@ -23,6 +23,7 @@ describe("Header", () => {
     );
 
     expect(screen.getByText("Moleskine")).toBeInTheDocument();
+    expect(screen.getByText("Diário Pessoal de Notas")).toBeInTheDocument();
     expect(screen.getByText("Sincronizado")).toBeInTheDocument();
 
     const backupBtn = screen.getByTitle("Exportar backup dos dados");
