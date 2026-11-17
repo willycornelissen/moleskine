@@ -22,6 +22,10 @@ describe("Header", () => {
       />
     );
 
+    expect(screen.getByAltText("Ícone do Moleskine")).toHaveAttribute(
+      "src",
+      "/icon-192.png"
+    );
     expect(screen.getByText("Moleskine")).toBeInTheDocument();
     expect(screen.getByText("Diário Pessoal de Notas")).toBeInTheDocument();
     expect(screen.getByText("Sincronizado")).toBeInTheDocument();

@@ -2,7 +2,8 @@ import React from "react";
 import type { SyncStatus } from "@/types/note";
 import type { User } from "firebase/auth";
 import { SyncBadge } from "./SyncBadge";
-import { BookOpen, Download, LogOut } from "lucide-react";
+import { BrandIcon } from "./BrandIcon";
+import { Download, LogOut } from "lucide-react";
 
 interface HeaderProps {
   user: User | null;
@@ -22,9 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center shadow-sm">
-            <BookOpen className="w-5 h-5" />
-          </div>
+          <BrandIcon size="sm" />
           <div>
             <h1 className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">
               Moleskine

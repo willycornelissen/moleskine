@@ -35,6 +35,10 @@ describe("AuthGuard", () => {
       </AuthGuard>
     );
 
+    expect(screen.getByAltText("Ícone do Moleskine")).toHaveAttribute(
+      "src",
+      "/icon-192.png"
+    );
     expect(screen.getByText("Moleskine")).toBeInTheDocument();
     expect(screen.getByText("Acesso negado: Este diário é privado.")).toBeInTheDocument();
 

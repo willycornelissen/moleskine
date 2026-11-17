@@ -1,6 +1,7 @@
 import React from "react";
 import type { User } from "firebase/auth";
-import { BookOpen, LogIn, Loader2, AlertCircle } from "lucide-react";
+import { LogIn, Loader2, AlertCircle } from "lucide-react";
+import { BrandIcon } from "./BrandIcon";
 
 interface AuthGuardProps {
   loading: boolean;
@@ -35,9 +36,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({
     return (
       <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 p-4">
         <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xl p-8 flex flex-col items-center text-center">
-          <div className="w-14 h-14 rounded-2xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center mb-5 shadow-sm">
-            <BookOpen className="w-7 h-7" />
-          </div>
+          <BrandIcon size="lg" className="mb-5" />
 
           <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             Moleskine
